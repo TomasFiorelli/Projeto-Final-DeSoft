@@ -8,14 +8,17 @@ pygame.init()
 # ----- Gera tela principal
 WIDTH = 600
 HEIGHT = 800
+BOTTOM = HEIGHT - 50
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Jogo de Empilhar Blocos')
 
 # ----- Inicia estruturas de dados
-img = pygame.image.load('bloco.png').convert()
+img = pygame.image.load('img/bloco.png').convert()
 BLOCO_WIDTH = 70
 BLOCO_HEIGHT = 70
 SPEED_CAM = 10
+CHAO_WIDTH = 600
+CHAO_HEIGHT = 50
 
 class Bloco(pygame.sprite.Sprite):
     def __init__(self, img, largura, camera):
@@ -74,23 +77,24 @@ while game:
     clock.tick(FPS)
     
     hits = pygame.sprite.spritecollide(bloco, all_blocks, False)
-    if bloco.rect.bottom == HEIGHT or len(hits) > 0:
+    if bloco.rect.bottom == BOTTOM or len(hits) > 0:
         if contador == 0:
-            if bloco.rect.bottom == HEIGHT:
+            if bloco.rect.bottom == BOTTOM:
                 contador +=1
         else:
-            if bloco.rect.bottom == HEIGHT:
+            if bloco.rect.bottom == BOTTOM or bloco.rect.bottom > ultimo_bloco_parado.rect.centery:
                 vidas -=1
                 bloco.kill()
-            if len(hits) > 0:
+            elif len(hits) > 0:
                 bloco_colisao = hits[0]
                 bloco.corta(bloco_colisao.rect.left, bloco_colisao.rect.right)
                 contador += 1
-            
-        bloco.speedx = 0
-        bloco.speedy = 0
-        ultimo_bloco_parado = bloco
-        all_blocks.add(bloco)
+        
+        if bloco.alive():
+            bloco.speedx = 0
+            bloco.speedy = 0
+            ultimo_bloco_parado = bloco
+            all_blocks.add(bloco)
         largura = bloco.rect.width
         bloco = Bloco(img, largura, camera)
         all_sprites.add(bloco)
@@ -116,6 +120,7 @@ while game:
     # ----- Gera saídas
     window.fill((255, 255, 255))  # Preenche com a cor branco
     all_sprites.draw(window)
+    
     
     # Desenhando o score
     text_surface = pygame.font.Font(None, 42).render("{:01d}".format(contador), True, (0, 0, 0))
