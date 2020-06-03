@@ -17,8 +17,7 @@ img = pygame.image.load('img/bloco.png').convert()
 BLOCO_WIDTH = 70
 BLOCO_HEIGHT = 70
 SPEED_CAM = 10
-CHAO_WIDTH = 600
-CHAO_HEIGHT = 50
+chao = pygame.image.load('img/chao.png').convert()
 
 class Bloco(pygame.sprite.Sprite):
     def __init__(self, img, largura, camera):
@@ -103,6 +102,8 @@ while game:
         camera.speedy = SPEED_CAM
     else:
         camera.speedy = 0
+    if vidas == 0:
+        game = False
 
     # ----- Trata eventos
     for event in pygame.event.get():
@@ -114,12 +115,13 @@ while game:
 
         if event.type == pygame.QUIT:
             game = False
- 
+
     all_sprites.update()
 
     # ----- Gera saídas
     window.fill((255, 255, 255))  # Preenche com a cor branco
     all_sprites.draw(window)
+    window.blit(chao,(0, BOTTOM))
     
     
     # Desenhando o score
@@ -138,5 +140,8 @@ while game:
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
 
+window.fill((0, 0, 0))
+pygame.display.update()
+time.sleep(2)
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
