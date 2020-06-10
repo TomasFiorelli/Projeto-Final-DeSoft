@@ -9,18 +9,17 @@ pygame.init()
 WIDTH = 600
 HEIGHT = 800
 BOTTOM = HEIGHT - 50
+BOTTOM2 = - 2066
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Jogo de Empilhar Blocos')
 
-
 # ----- Inicia estruturas de dados
-img = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/bloco.png').convert()
-predio_terreo = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/predio_terreo.png').convert()
-predio_andares = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/predio_andares.png').convert()
+foto_fundo = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/Foto fundo.png').convert()
 BLOCO_WIDTH = 100
 BLOCO_HEIGHT = 70
 SPEED_CAM = 10
 chao = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/chao.png').convert()
+foto_vida = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/vida.png').convert ()
 
 class Bloco(pygame.sprite.Sprite):
     def __init__(self, img, largura, camera):
@@ -62,8 +61,9 @@ class Camera:
 
 QUIT = 0
 GAME_INICIO = 1
-GAME_SCREEN = 2
-GAME_OVER = 3
+GAME_INFORMATIVO= 2
+GAME_SCREEN = 3
+GAME_OVER = 4
 
 def game_inicio_screen(window):  #define o que acontece na tela inicial
     while True:
@@ -71,12 +71,30 @@ def game_inicio_screen(window):  #define o que acontece na tela inicial
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.KEYUP:
-                return GAME_SCREEN
+                if event.key == pygame.K_SPACE:
+                    return GAME_INFORMATIVO
             if event.type == pygame.QUIT:
                 return QUIT
-        game_over_foto = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/Foto inicio.png').convert()        
+        inicio_foto = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/Foto inicio.png').convert()        
         window.fill((0, 0, 0))
-        window.blit(game_over_foto,(0, 0))
+        window.blit(inicio_foto,(0, 0))
+        pygame.display.update()
+
+def game_informativo_screen(window):  #define o que acontece na tela informativa
+    while True:
+        # ----- Trata eventos
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    return GAME_SCREEN
+                if event.key == pygame.K_ESCAPE:
+                    return QUIT
+            if event.type == pygame.QUIT:
+                return QUIT
+        informativo_foto = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/Foto informativo.png').convert()        
+        window.fill((0, 0, 0))
+        window.blit(informativo_foto,(0, 0))
         pygame.display.update()
 
 
@@ -86,10 +104,12 @@ def game_screen(window):
     clock = pygame.time.Clock()
     FPS = 60
     pos_chao = BOTTOM
+    pos_fundo = BOTTOM2
 
     camera = Camera()
 
     ultimo_bloco_parado = None
+    img = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/predio_terreo.png').convert()
     bloco = Bloco(img, BLOCO_WIDTH, camera)
     all_sprites = pygame.sprite.Group()
     all_sprites.add(bloco)
@@ -120,6 +140,7 @@ def game_screen(window):
                 ultimo_bloco_parado = bloco
                 all_blocks.add(bloco)
             largura = bloco.rect.width
+            img = pygame.image.load('/Users/gabriellazullo/Documents/Design de software/Projeto final/predio_andares.png').convert()
             bloco = Bloco(img, largura, camera)
             all_sprites.add(bloco)
         
@@ -144,13 +165,14 @@ def game_screen(window):
             
         all_sprites.update()
         pos_chao += camera.speedy  # Atualiza posição do chão
+        pos_fundo += camera.speedy
 
         # ----- Gera saídas
         window.fill((255, 255, 255))  # Preenche com a cor branco
+        window.blit(foto_fundo,(0, pos_fundo))
         all_sprites.draw(window)
         window.blit(chao,(0, pos_chao))
-        
-        
+
         # Desenhando o score
         text_surface = pygame.font.Font(None, 42).render("{:01d}".format(contador), True, (0, 0, 0))
         text_rect = text_surface.get_rect()
@@ -158,10 +180,13 @@ def game_screen(window):
         window.blit(text_surface, text_rect)
         
         # Desenhando o vida
-        text_surface = pygame.font.Font(None, 42).render("{:01d}".format(vidas), True, (0, 0, 0))
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (550,  40)
-        window.blit(text_surface, text_rect)
+        for i in range(vidas):
+            window.blit(foto_vida, (525, 40 + i*45))
+        
+        #text_surface = pygame.font.Font(None, 42).render("{:01d}".format(vidas), True, (0, 0, 0))
+        #text_rect = text_surface.get_rect()
+        #text_rect.midtop = (550,  40)
+        #window.blit(text_surface, text_rect)
         
 
         # ----- Atualiza estado do jogo
@@ -201,11 +226,12 @@ contador = 0
 while state != QUIT:
     if state == GAME_INICIO:
         state = game_inicio_screen(window)
+    elif state == GAME_INFORMATIVO:
+        state = game_informativo_screen(window)
     elif state == GAME_SCREEN:
         state, contador = game_screen(window)
     elif state == GAME_OVER:
         state = game_over_screen(window, contador)
-    
 
 
 # ===== Finalização =====
