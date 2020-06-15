@@ -32,4 +32,4 @@ def game_over_screen(window, contador): # Função que chama a tela final
         window.blit(text1, (250, 425))
         window.blit(text2, (180, 475))
         
-        pygame.display.update()
+        pygame.display.update() 
