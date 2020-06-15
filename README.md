@@ -6,4 +6,7 @@ Além disso, se você erra o topo dos blocos, você perde uma vida.
 Ou seja, o objetivo do jogo é conseguir acertar o topo de cada bloco e conseguir fazer a maior pontuação possível.
 
 
-Para conseguir jogar, de run no arquivo que tem o nome "Empilha_Blocos".
+Para conseguir jogar, faça o download dos seguintes arquivos: "Empilhas_Blocos", "Funcao_Principal", "Tela_Final", "Telas_de_Inicio", "classe", "config", "img" e "snd". Em seguida, rode o arquivo "Empilha_Blocos".
+
+
+Obs: Certifique-se de que todos os arquivos instalados estão na mesma pasta e que as imagens e o som estejam inclusas em suas respectivas pastas descompactadas ("img" e "snd").
