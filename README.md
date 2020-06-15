@@ -11,3 +11,8 @@ Para conseguir jogar, faça o download dos seguintes arquivos: "Empilhas_Blocos"
 Link para o vídeo de apresentação: https://youtu.be/mEx_B1XNDbY
 
 Obs: Certifique-se de que todos os arquivos instalados estão na mesma pasta e que as imagens e o som estejam inclusas em suas respectivas pastas descompactadas ("img" e "snd").
+
+Integrantes do Grupo:
+- Gabriella Kovarick Zullo
+- Pedro de Souza Zequi
+- Tomás Fiorelli Barbosa
