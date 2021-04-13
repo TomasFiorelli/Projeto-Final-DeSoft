@@ -14,18 +14,23 @@ class Bloco(pygame.sprite.Sprite):
         self.speedy = 0
         self.camera = camera
         
-    def update(self):
-        #atualização do movimento do bloco
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy + self.camera.speedy
+    def verificaEscape (self):
         if self.rect.left > WIDTH:
             self.rect.x = -100
             self.rect.y = 0
             self.speedx = 5
             self.speedy = 0
+    def verificaMorte (self):
         if self.rect.bottom == HEIGHT:
             self.speedx = 0
             self.speedy = 0
+
+    def update(self):
+        #atualização do movimento do bloco
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy + self.camera.speedy
+        verificaEscape(self)
+        verificaMorte(self)
     
     def corta(self, esquerda, direita):
         #função que atualiza o bloco se ele for cortado, ou seja, quando o bloco é colocado errado em cima, corta e fica menor
