@@ -8,16 +8,16 @@ class Bloco(pygame.sprite.Sprite):
         img = pygame.transform.scale(img, (largura, BLOCO_HEIGHT))
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.x = -100
-        self.rect.y = 0
+        self.rect.x = posicao_inicial[0]
+        self.rect.y = posicao_inicial[1]
         self.speedx = 5
         self.speedy = 0
         self.camera = camera
         
     def verificaEscape (self):
         if self.rect.left > WIDTH:
-            self.rect.x = -100
-            self.rect.y = 0
+            self.rect.x = posicao_inicial[0]
+            self.rect.y = posicao_inicial[1]
             self.speedx = 5
             self.speedy = 0
     def verificaMorte (self):
