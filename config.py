@@ -17,3 +17,7 @@ GAME_INICIO = 1
 GAME_INFORMATIVO = 2
 GAME_SCREEN = 3
 GAME_OVER = 4 
+
+posicao_x_inicial = -100
+posicao_y_inicial = 0
+posicao_inicial = [posicao_x_inicial,posicao_y_inicial]
